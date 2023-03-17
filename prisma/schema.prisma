@@ -28,6 +28,7 @@ model Campus {
 model University {
   id          Int      @id @default(autoincrement())
   name        String
+  acronym     String
   campuses    Campus[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
