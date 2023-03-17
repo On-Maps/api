@@ -1,6 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { UniversityService } from './university.service';
+import { PrismaClientInitializationError } from '@prisma/client/runtime';
 
 @Controller('university')
 export class UniversityController {
