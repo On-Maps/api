@@ -19,4 +19,13 @@ export class RoomService {
 
     return rooms;
   }
+
+  async update(id: number, data: Prisma.RoomUpdateInput) {
+    const room = await this.prisma.room.update({
+      where: { id },
+      data,
+    });
+
+    return room;
+  }
 }

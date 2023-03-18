@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { RoomService } from './room.service';
 
@@ -14,5 +14,15 @@ export class RoomController {
   @Get()
   findAll() {
     return this.roomService.findAll();
+  }
+
+  @Post('/update/:id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateRoom: Prisma.RoomUpdateInput,
+  ) {
+    const roomId = parseInt(id, 10);
+    const updatedRoom = await this.roomService.update(roomId, updateRoom);
+    return updatedRoom;
   }
 }
