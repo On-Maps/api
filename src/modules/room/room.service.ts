@@ -13,4 +13,10 @@ export class RoomService {
 
     return room;
   }
+
+  async findAll() {
+    const rooms = await this.prisma.room.findMany();
+
+    return rooms;
+  }
 }
