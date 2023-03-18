@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { RoomService } from './room.service';
 
@@ -9,5 +9,10 @@ export class RoomController {
   @Post()
   create(@Body() createRoom: Prisma.RoomCreateInput) {
     return this.roomService.create(createRoom);
+  }
+
+  @Get()
+  findAll() {
+    return this.roomService.findAll();
   }
 }
