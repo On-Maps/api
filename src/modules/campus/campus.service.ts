@@ -13,4 +13,13 @@ export class CampusService {
 
     return campus;
   }
+
+  async update(id: number, data: Prisma.CampusUpdateInput) {
+    const campus = await this.prisma.campus.update({
+      where: { id },
+      data,
+    });
+
+    return campus;
+  }
 }
