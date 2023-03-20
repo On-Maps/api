@@ -28,4 +28,12 @@ export class RoomService {
 
     return room;
   }
+
+  async findOne(id: number) {
+    const room = await this.prisma.room.findUnique({
+      where: { id },
+    });
+
+    return room;
+  }
 }
