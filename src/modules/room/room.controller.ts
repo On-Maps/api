@@ -25,4 +25,11 @@ export class RoomController {
     const updatedRoom = await this.roomService.update(roomId, updateRoom);
     return updatedRoom;
   }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const roomId = parseInt(id, 10);
+    const room = await this.roomService.findOne(roomId);
+    return room;
+  }
 }
