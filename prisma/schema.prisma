@@ -29,6 +29,7 @@ model University {
   id          Int      @id @default(autoincrement())
   name        String
   acronym     String
+  address     String
   campuses    Campus[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -39,6 +40,35 @@ model Room {
   name        String
   campus      Campus @relation(fields: [campusId], references: [id])
   campusId    Int
+  piso        Int
+  description String
+  eventos     Evento[]
+  open        Boolean
+  timestamp   DateTime
+  category    Category[]
+  latitude    Float
+  longitude   Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  room        Room @relation(fields: [roomId], references: [id])
+  roomId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Evento {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  date        DateTime
+  room        Room @relation(fields: [roomId], references: [id])
+  roomId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
