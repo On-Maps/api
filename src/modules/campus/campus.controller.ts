@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CampusService } from './campus.service';
 
@@ -19,5 +19,10 @@ export class CampusController {
     const roomId = parseInt(id, 10);
     const updatedCampus = await this.campusService.update(roomId, updateCampus);
     return updatedCampus;
+  }
+
+  @Get()
+  findAll() {
+    return this.campusService.findAll();
   }
 }
