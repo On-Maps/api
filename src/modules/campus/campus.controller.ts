@@ -8,6 +8,9 @@ export class CampusController {
 
   @Post()
   create(@Body() createCampus: Prisma.CampusCreateInput) {
+    createCampus.name = createCampus.name.toLowerCase();
+    createCampus.city = createCampus.city.toLowerCase();
+    createCampus.state = createCampus.state.toLowerCase();
     return this.campusService.create(createCampus);
   }
 
@@ -17,6 +20,9 @@ export class CampusController {
     @Body() updateCampus: Prisma.CampusUpdateInput,
   ) {
     const roomId = parseInt(id, 10);
+    updateCampus.name = String(updateCampus.name).toLowerCase();
+    updateCampus.city = String(updateCampus.city).toLowerCase();
+    updateCampus.state = String(updateCampus.state).toLowerCase();
     const updatedCampus = await this.campusService.update(roomId, updateCampus);
     return updatedCampus;
   }
