@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { UniversityService } from './university.service';
 
@@ -9,5 +9,10 @@ export class UniversityController {
   @Post()
   create(@Body() createUniversity: Prisma.UniversityCreateInput) {
     return this.universityService.create(createUniversity);
+  }
+
+  @Get()
+  findAll() {
+    return this.universityService.findAll();
   }
 }
