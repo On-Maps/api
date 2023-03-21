@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { RoomService } from './room.service';
 
@@ -31,5 +40,23 @@ export class RoomController {
     const roomId = parseInt(id, 10);
     const room = await this.roomService.findOne(roomId);
     return room;
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    try {
+      const roomId = parseInt(id, 10);
+      const room = await this.roomService.remove(roomId);
+      return room;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`Sala com o ID ${id} não encontrada.`);
+        }
+      }
+      throw new InternalServerErrorException(
+        'Ocorreu um erro ao excluir a sala.',
+      );
+    }
   }
 }
