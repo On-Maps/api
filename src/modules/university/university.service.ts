@@ -34,4 +34,13 @@ export class UniversityService {
       );
     }
   }
+
+  async update(id: number, data: Prisma.UniversityUpdateInput) {
+    const university = await this.prisma.university.update({
+      where: { id },
+      data,
+    });
+
+    return university;
+  }
 }
