@@ -17,6 +17,7 @@ export class RoomController {
 
   @Post()
   create(@Body() createRoom: Prisma.RoomCreateInput) {
+    createRoom.name = createRoom.name.toLowerCase();
     return this.roomService.create(createRoom);
   }
 
@@ -31,6 +32,7 @@ export class RoomController {
     @Body() updateRoom: Prisma.RoomUpdateInput,
   ) {
     const roomId = parseInt(id, 10);
+    updateRoom.name = String(updateRoom.name).toLowerCase();
     const updatedRoom = await this.roomService.update(roomId, updateRoom);
     return updatedRoom;
   }

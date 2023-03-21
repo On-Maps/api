@@ -16,6 +16,8 @@ export class UniversityController {
 
   @Post()
   create(@Body() createUniversity: Prisma.UniversityCreateInput) {
+    createUniversity.name = createUniversity.name.toLowerCase();
+    createUniversity.acronym = createUniversity.acronym.toUpperCase();
     return this.universityService.create(createUniversity);
   }
 
@@ -31,6 +33,8 @@ export class UniversityController {
   ) {
     try {
       const UniversityId = parseInt(id, 10);
+      updateUniversity.name = String(updateUniversity.name).toLowerCase();
+      updateUniversity.acronym = String(updateUniversity.acronym).toUpperCase();
       const updatedUniversity = await this.universityService.update(
         UniversityId,
         updateUniversity,
