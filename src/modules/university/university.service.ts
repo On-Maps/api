@@ -26,6 +26,9 @@ export class UniversityService {
       }
       return universities;
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         'Ocorreu um erro ao buscar as universidades.',
       );
