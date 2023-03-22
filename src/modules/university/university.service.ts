@@ -13,6 +13,9 @@ export class UniversityService {
   async create(data: Prisma.UniversityCreateInput) {
     const university = await this.prisma.university.create({
       data,
+      include: {
+        campuses: true,
+      },
     });
 
     return university;
@@ -20,7 +23,11 @@ export class UniversityService {
 
   async findAll() {
     try {
-      const universities = await this.prisma.university.findMany();
+      const universities = await this.prisma.university.findMany({
+        include: {
+          campuses: true,
+        },
+      });
       if (universities.length === 0) {
         throw new NotFoundException('Nenhuma universidade encontrada.');
       }

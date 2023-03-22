@@ -9,13 +9,24 @@ export class PlaceService {
   async create(data: Prisma.PlaceCreateInput) {
     const place = await this.prisma.place.create({
       data,
+      include: {
+        campus: true,
+      },
     });
 
     return place;
   }
 
   async findAll() {
-    const places = await this.prisma.place.findMany();
+    const places = await this.prisma.place.findMany({
+      include: {
+        campus: true,
+        eventos: true,
+        latitude: true,
+        longitude: true,
+        category: true,
+      },
+    });
 
     return places;
   }
@@ -32,6 +43,13 @@ export class PlaceService {
   async findOne(id: number) {
     const place = await this.prisma.place.findUnique({
       where: { id },
+      include: {
+        campus: true,
+        eventos: true,
+        latitude: true,
+        longitude: true,
+        category: true,
+      },
     });
 
     return place;
