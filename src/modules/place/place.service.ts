@@ -62,4 +62,40 @@ export class PlaceService {
 
     return place;
   }
+
+  async findAllByCampus(id: number) {
+    const places = await this.prisma.place.findMany({
+      where: { campusId: id },
+      include: {
+        campus: true,
+        eventos: true,
+        latitude: true,
+        longitude: true,
+        category: true,
+      },
+    });
+
+    return places;
+  }
+
+  async findAllByNameCampus(name: string) {
+    const places = await this.prisma.place.findMany({
+      where: {
+        campus: {
+          name: {
+            contains: name,
+          },
+        },
+      },
+      include: {
+        campus: true,
+        eventos: true,
+        latitude: true,
+        longitude: true,
+        category: true,
+      },
+    });
+
+    return places;
+  }
 }
