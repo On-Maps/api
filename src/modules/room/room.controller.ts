@@ -8,9 +8,11 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { RoomService } from './room.service';
 
+@ApiTags('Room')
 @Controller('room')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
