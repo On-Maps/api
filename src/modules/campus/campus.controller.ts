@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { Campus } from 'src/_gen/prisma-class/campus';
 import { CampusService } from './campus.service';
 
 @ApiTags('Campus')
@@ -8,6 +9,22 @@ import { CampusService } from './campus.service';
 export class CampusController {
   constructor(private readonly campusService: CampusService) {}
 
+  @ApiResponse({
+    schema: {
+      example: {
+        name: 'Campus 1',
+        city: 'São Paulo',
+        state: 'SP',
+        phone: '11999999999',
+        email: 'usp@gmail.com',
+        university: {
+          connect: {
+            id: 1,
+          },
+        },
+      },
+    },
+  })
   @Post()
   create(@Body() createCampus: Prisma.CampusCreateInput) {
     createCampus.name = createCampus.name.toLowerCase();
@@ -29,6 +46,13 @@ export class CampusController {
     return updatedCampus;
   }
 
+  @ApiParam({
+    name: 'id',
+    description: 'ID do campus',
+  })
+  @ApiResponse({
+    type: Campus,
+  })
   @Get()
   findAll() {
     return this.campusService.findAll();
