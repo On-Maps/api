@@ -46,7 +46,18 @@ export class PlaceController {
     return place;
   }
 
-  //Busca todas as salas pelo ID do campus
+  //Busca todas o lugar pelo nome e pelo campus
+  @Get('/campus/:campusName/name/:name')
+  async findByNameAndCampus(
+    @Param('campusName') campusName: string,
+    @Param('name') name: string,
+  ) {
+    const place = await this.placeService.findByNameAndCampus(campusName, name);
+
+    return place;
+  }
+
+  //Busca todas os lugares pelo ID do campus
   @Get('/campus/:id')
   async findAllByCampus(@Param('id') id: string) {
     const campusId = parseInt(id, 10);
@@ -54,7 +65,7 @@ export class PlaceController {
     return places;
   }
 
-  //Busca todas as salas pelo nome do campus
+  //Busca todas os lugares pelo nome do campus
   @Get('/campus-name/:name')
   async findAllByNameCampus(@Param('name') name: string) {
     const places = await this.placeService.findAllByNameCampus(name);

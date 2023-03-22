@@ -55,6 +55,32 @@ export class PlaceService {
     return place;
   }
 
+  async findByNameAndCampus(nameCampus: string, namePlace: string) {
+    const places = await this.prisma.place.findMany({
+      where: {
+        campus: {
+          name: {
+            contains: nameCampus,
+          },
+        },
+        AND: {
+          name: {
+            contains: namePlace,
+          },
+        },
+      },
+      include: {
+        campus: true,
+        eventos: true,
+        latitude: true,
+        longitude: true,
+        category: true,
+      },
+    });
+
+    return places;
+  }
+
   async remove(id: number) {
     const place = await this.prisma.place.delete({
       where: { id },
