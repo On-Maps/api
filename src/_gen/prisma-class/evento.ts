@@ -1,5 +1,5 @@
-import { Room } from './room';
-import { ApiProperty } from '@nestjs/swagger';
+import { Place } from './place';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Evento {
   @ApiProperty({ type: Number })
@@ -8,17 +8,17 @@ export class Evento {
   @ApiProperty({ type: String })
   name: string;
 
-  @ApiProperty({ type: String })
-  description: string;
+  @ApiPropertyOptional({ type: String })
+  description?: string;
 
-  @ApiProperty({ type: Date })
-  date: Date;
+  @ApiPropertyOptional({ type: Date })
+  date?: Date;
 
-  @ApiProperty({ type: () => Room })
-  room: Room;
+  @ApiProperty({ type: () => Place })
+  place: Place;
 
   @ApiProperty({ type: Number })
-  roomId: number;
+  placeId: number;
 
   @ApiProperty({ type: Date })
   createdAt: Date;

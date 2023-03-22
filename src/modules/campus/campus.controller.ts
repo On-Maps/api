@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { Campus } from 'src/_gen/prisma-class/campus';
 import { CampusService } from './campus.service';
@@ -38,11 +38,14 @@ export class CampusController {
     @Param('id') id: string,
     @Body() updateCampus: Prisma.CampusUpdateInput,
   ) {
-    const roomId = parseInt(id, 10);
+    const placeId = parseInt(id, 10);
     updateCampus.name = String(updateCampus.name).toLowerCase();
     updateCampus.city = String(updateCampus.city).toLowerCase();
     updateCampus.state = String(updateCampus.state).toLowerCase();
-    const updatedCampus = await this.campusService.update(roomId, updateCampus);
+    const updatedCampus = await this.campusService.update(
+      placeId,
+      updateCampus,
+    );
     return updatedCampus;
   }
 

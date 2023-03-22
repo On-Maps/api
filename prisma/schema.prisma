@@ -21,11 +21,11 @@ model Campus {
   name        String
   city        String
   state       String
-  phone       String
-  email       String
+  phone       String?
+  email       String?
   university  University @relation(fields: [universityId], references: [id])
   universityId Int
-  rooms       Room[]
+  place       Place[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -40,19 +40,37 @@ model University {
   updatedAt   DateTime @updatedAt
 }
 
-model Room {
+model Place {
   id          Int      @id @default(autoincrement())
   name        String
   campus      Campus @relation(fields: [campusId], references: [id])
   campusId    Int
-  piso        Int
-  description String
+  piso        Int?
+  description String?
   eventos     Evento[]
   open        Boolean
   timestamp   DateTime
   category    Category[]
+  latitude    Latitude[]
+  longitude   Longitude[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Latitude {
+  id          Int      @id @default(autoincrement())
   latitude    Float
+  place        Place @relation(fields: [placeId], references: [id])
+  placeId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Longitude {
+  id          Int      @id @default(autoincrement())
   longitude   Float
+  place        Place @relation(fields: [placeId], references: [id])
+  placeId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -60,9 +78,9 @@ model Room {
 model Category {
   id          Int      @id @default(autoincrement())
   name        String
-  description String
-  room        Room @relation(fields: [roomId], references: [id])
-  roomId      Int
+  description String?
+  place       Place @relation(fields: [placeId], references: [id])
+  placeId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -70,10 +88,10 @@ model Category {
 model Evento {
   id          Int      @id @default(autoincrement())
   name        String
-  description String
-  date        DateTime
-  room        Room @relation(fields: [roomId], references: [id])
-  roomId      Int
+  description String?
+  date        DateTime?
+  place        Place @relation(fields: [placeId], references: [id])
+  placeId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

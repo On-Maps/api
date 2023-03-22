@@ -1,6 +1,6 @@
 import { University } from './university';
-import { Room } from './room';
-import { ApiProperty } from '@nestjs/swagger';
+import { Place } from './place';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Campus {
   @ApiProperty({ type: Number })
@@ -15,11 +15,11 @@ export class Campus {
   @ApiProperty({ type: String })
   state: string;
 
-  @ApiProperty({ type: String })
-  phone: string;
+  @ApiPropertyOptional({ type: String })
+  phone?: string;
 
-  @ApiProperty({ type: String })
-  email: string;
+  @ApiPropertyOptional({ type: String })
+  email?: string;
 
   @ApiProperty({ type: () => University })
   university: University;
@@ -27,8 +27,8 @@ export class Campus {
   @ApiProperty({ type: Number })
   universityId: number;
 
-  @ApiProperty({ isArray: true, type: () => Room })
-  rooms: Room[];
+  @ApiProperty({ isArray: true, type: () => Place })
+  place: Place[];
 
   @ApiProperty({ type: Date })
   createdAt: Date;

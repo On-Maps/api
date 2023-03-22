@@ -1,15 +1,12 @@
 import { Place } from './place';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class Category {
+export class Latitude {
   @ApiProperty({ type: Number })
   id: number;
 
-  @ApiProperty({ type: String })
-  name: string;
-
-  @ApiPropertyOptional({ type: String })
-  description?: string;
+  @ApiProperty({ type: Number })
+  latitude: number;
 
   @ApiProperty({ type: () => Place })
   place: Place;

@@ -5,11 +5,11 @@ import { PrismaService } from './database/prisma.service';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Campus } from './_gen/prisma-class/campus';
 import { Category } from './_gen/prisma-class/category';
-import { Room } from './_gen/prisma-class/room';
 import { University } from './_gen/prisma-class/university';
 import { User } from './_gen/prisma-class/user';
 import { UserToken } from './_gen/prisma-class/user_token';
 import { Evento } from './_gen/prisma-class/evento';
+import { Place } from './_gen/prisma-class/place';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,12 +21,12 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('OnMaps example')
     .setDescription('The onmaps API description')
-    .setVersion('1.0')
-    .addTag('maps')
+    .setVersion('2.x')
+    .addTag('Maps')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config, {
-    extraModels: [Campus, Category, Room, University, User, UserToken, Evento],
+    extraModels: [Campus, Category, Place, University, User, UserToken, Evento],
   });
   SwaggerModule.setup('api', app, document);
 

@@ -1,9 +1,11 @@
 import { Campus } from './campus';
 import { Evento } from './evento';
 import { Category } from './category';
-import { ApiProperty } from '@nestjs/swagger';
+import { Latitude } from './latitude';
+import { Longitude } from './longitude';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class Room {
+export class Place {
   @ApiProperty({ type: Number })
   id: number;
 
@@ -16,11 +18,11 @@ export class Room {
   @ApiProperty({ type: Number })
   campusId: number;
 
-  @ApiProperty({ type: Number })
-  piso: number;
+  @ApiPropertyOptional({ type: Number })
+  piso?: number;
 
-  @ApiProperty({ type: String })
-  description: string;
+  @ApiPropertyOptional({ type: String })
+  description?: string;
 
   @ApiProperty({ isArray: true, type: () => Evento })
   eventos: Evento[];
@@ -34,11 +36,11 @@ export class Room {
   @ApiProperty({ isArray: true, type: () => Category })
   category: Category[];
 
-  @ApiProperty({ type: Number })
-  latitude: number;
+  @ApiProperty({ isArray: true, type: () => Latitude })
+  latitude: Latitude[];
 
-  @ApiProperty({ type: Number })
-  longitude: number;
+  @ApiProperty({ isArray: true, type: () => Longitude })
+  longitude: Longitude[];
 
   @ApiProperty({ type: Date })
   createdAt: Date;
