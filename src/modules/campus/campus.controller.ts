@@ -1,7 +1,9 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { CampusService } from './campus.service';
 
+@ApiTags('Campus')
 @Controller('campus')
 export class CampusController {
   constructor(private readonly campusService: CampusService) {}
