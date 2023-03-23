@@ -17,33 +17,73 @@ import { PlaceService } from './place.service';
 export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}
 
+  //criar lugar
   @Post()
   create(@Body() createPlace: Prisma.PlaceCreateInput) {
     createPlace.name = createPlace.name.toLowerCase();
     return this.placeService.create(createPlace);
   }
 
+  //buscar todos os lugares
   @Get()
-  findAll() {
-    return this.placeService.findAll();
+  async findAll() {
+    try {
+      const place = await this.placeService.findAll();
+      if (place.length === 0) {
+        throw new NotFoundException('No place found.');
+      }
+      return place;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while fetching the places.',
+      );
+    }
   }
 
+  //atualizar lugar por ID
   @Post('/update/:id')
   async update(
     @Param('id') id: string,
     @Body() updatePlace: Prisma.PlaceUpdateInput,
   ) {
-    const placeId = parseInt(id, 10);
-    updatePlace.name = String(updatePlace.name).toLowerCase();
-    const updatedPlace = await this.placeService.update(placeId, updatePlace);
-    return updatedPlace;
+    try {
+      const placeId = parseInt(id, 10);
+      updatePlace.name = String(updatePlace.name).toLowerCase();
+      const updatedPlace = await this.placeService.update(placeId, updatePlace);
+      return updatedPlace;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`Place with ID ${id} not found.`);
+        }
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while updating the place.',
+      );
+    }
   }
 
+  //Buscar lugar por ID
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const placeId = parseInt(id, 10);
-    const place = await this.placeService.findOne(placeId);
-    return place;
+    try {
+      const placeId = parseInt(id, 10);
+      const place = await this.placeService.findOne(placeId);
+      if (!place) {
+        throw new NotFoundException(`Place with ID ${id} not found.`);
+      }
+      return place;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while fetching the place.',
+      );
+    }
   }
 
   //Busca todas o lugar pelo nome e pelo campus
@@ -72,20 +112,22 @@ export class PlaceController {
     return places;
   }
 
+  //Deletar um lugar pelo ID
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
       const placeId = parseInt(id, 10);
       const place = await this.placeService.remove(placeId);
+      if (!place) {
+        throw new NotFoundException(`Place with ID ${id} not found.`);
+      }
       return place;
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-          throw new NotFoundException(`Sala com o ID ${id} não encontrada.`);
-        }
+      if (error instanceof NotFoundException) {
+        throw error;
       }
       throw new InternalServerErrorException(
-        'Ocorreu um erro ao excluir a sala.',
+        'There was an error deleting the place.',
       );
     }
   }
