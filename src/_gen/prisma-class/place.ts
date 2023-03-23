@@ -1,8 +1,7 @@
 import { Campus } from './campus';
 import { Evento } from './evento';
 import { Category } from './category';
-import { Latitude } from './latitude';
-import { Longitude } from './longitude';
+import { Position } from './position';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Place {
@@ -36,11 +35,8 @@ export class Place {
   @ApiProperty({ isArray: true, type: () => Category })
   category: Category[];
 
-  @ApiProperty({ isArray: true, type: () => Latitude })
-  latitude: Latitude[];
-
-  @ApiProperty({ isArray: true, type: () => Longitude })
-  longitude: Longitude[];
+  @ApiProperty({ isArray: true, type: () => Position })
+  position: Position[];
 
   @ApiProperty({ type: Date })
   createdAt: Date;

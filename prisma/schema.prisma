@@ -51,26 +51,17 @@ model Place {
   open        Boolean
   timestamp   DateTime
   category    Category[]
-  latitude    Latitude[]
-  longitude   Longitude[]
+  position    Position[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-model Latitude {
+model Position {
   id          Int      @id @default(autoincrement())
   latitude    Float
-  place        Place @relation(fields: [placeId], references: [id])
-  placeId      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Longitude {
-  id          Int      @id @default(autoincrement())
   longitude   Float
-  place        Place @relation(fields: [placeId], references: [id])
-  placeId      Int
+  place       Place @relation(fields: [placeId], references: [id])
+  placeId     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
