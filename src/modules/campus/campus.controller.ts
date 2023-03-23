@@ -6,6 +6,8 @@ import {
   Get,
   NotFoundException,
   InternalServerErrorException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
@@ -36,10 +38,20 @@ export class CampusController {
 
   //criar campus
   @Post()
-  create(@Body() createCampus: Prisma.CampusCreateInput) {
+  async create(@Body() createCampus: Prisma.CampusCreateInput) {
     createCampus.name = createCampus.name.toLowerCase();
     createCampus.city = createCampus.city.toLowerCase();
     createCampus.state = createCampus.state.toLowerCase();
+
+    const campus = await this.campusService.findAll();
+    campus.forEach((campus) => {
+      if (campus.name === createCampus.name) {
+        throw new HttpException(
+          `The campus named '${createCampus.name}' already exists.`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    });
     return this.campusService.create(createCampus);
   }
 
