@@ -22,44 +22,48 @@ export class UserService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
 
-    if (!user) {
-      throw new Error('Email or password incorrect');
+      if (!user) {
+        throw new Error('Email or password incorrect');
+      }
+
+      const {
+        expires_in_refresh_token,
+        expires_in_token,
+        secret_refresh_token,
+        secret_token,
+        expires_refresh_token_days,
+      } = auth;
+
+      const passwordHash = await compare(password, user.password);
+
+      if (!passwordHash) {
+        throw new Error('Email or password incorrect');
+      }
+
+      const token = sign({}, secret_token, {
+        subject: user.name,
+        expiresIn: expires_in_token,
+      });
+
+      await this.prisma.userToken.create({
+        data: {
+          token,
+          expiresDate: new Date(Date.now() + 60 * 60 * 1000),
+          userId: user.id,
+        },
+      });
+
+      return token;
+    } catch (error) {
+      return error.message;
     }
-
-    const {
-      expires_in_refresh_token,
-      expires_in_token,
-      secret_refresh_token,
-      secret_token,
-      expires_refresh_token_days,
-    } = auth;
-
-    const passwordHash = await compare(password, user.password);
-
-    if (!passwordHash) {
-      throw new Error('Email or password incorrect');
-    }
-
-    const token = sign({}, secret_token, {
-      subject: user.name,
-      expiresIn: expires_in_token,
-    });
-
-    await this.prisma.userToken.create({
-      data: {
-        token,
-        expiresDate: new Date(Date.now() + 60 * 60 * 1000),
-        userId: user.id,
-      },
-    });
-
-    return token;
   }
 
   async findAll() {
