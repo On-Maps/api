@@ -21,20 +21,29 @@ export class UniversityController {
   //criar universidade
   @Post()
   async create(@Body() createUniversity: Prisma.UniversityCreateInput) {
-    createUniversity.name = createUniversity.name.toLowerCase();
-    createUniversity.acronym = createUniversity.acronym.toUpperCase();
+    try {
+      createUniversity.name = createUniversity.name.toLowerCase();
+      createUniversity.acronym = createUniversity.acronym.toUpperCase();
 
-    const university = await this.universityService.findAll();
-    university.forEach((university) => {
-      if (university.name === createUniversity.name) {
-        throw new HttpException(
-          `The university named '${createUniversity.name}' already exists.`,
-          HttpStatus.BAD_REQUEST,
-        );
+      const university = await this.universityService.findAll();
+      university.forEach((university) => {
+        if (university.name === createUniversity.name) {
+          throw new HttpException(
+            `The university named '${createUniversity.name}' already exists.`,
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      });
+
+      return this.universityService.create(createUniversity);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
       }
-    });
-
-    return this.universityService.create(createUniversity);
+      throw new InternalServerErrorException(
+        'An error occurred while registering university',
+      );
+    }
   }
 
   //buscar todas as universidades

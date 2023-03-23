@@ -1,4 +1,11 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { UserService } from './user.service';
@@ -10,8 +17,26 @@ export class UserController {
 
   //criar usuário
   @Post()
-  create(@Body() data: Prisma.UserCreateInput) {
-    return this.userService.create(data);
+  async create(@Body() data: Prisma.UserCreateInput) {
+    try {
+      const user = await this.userService.findAll();
+      user.forEach((user) => {
+        if (user.email === data.email) {
+          throw new HttpException(
+            `The email '${data.email}' already exists.`,
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      });
+      return this.userService.create(data);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while registering user',
+      );
+    }
   }
 
   //login

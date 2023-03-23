@@ -61,4 +61,9 @@ export class UserService {
 
     return token;
   }
+
+  async findAll() {
+    const users = await this.prisma.user.findMany();
+    return users;
+  }
 }
