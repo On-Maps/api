@@ -18,6 +18,7 @@ import { UniversityService } from './university.service';
 export class UniversityController {
   constructor(private readonly universityService: UniversityService) {}
 
+  //criar universidade
   @Post()
   async create(@Body() createUniversity: Prisma.UniversityCreateInput) {
     createUniversity.name = createUniversity.name.toLowerCase();
@@ -36,6 +37,7 @@ export class UniversityController {
     return this.universityService.create(createUniversity);
   }
 
+  //buscar todas as universidades
   @Get()
   async findAll() {
     try {
@@ -54,6 +56,7 @@ export class UniversityController {
     }
   }
 
+  //atualizar universidade por ID
   @Post('/update/:id')
   async update(
     @Param('id') id: string,

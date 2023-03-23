@@ -33,6 +33,8 @@ export class CampusController {
       },
     },
   })
+
+  //criar campus
   @Post()
   create(@Body() createCampus: Prisma.CampusCreateInput) {
     createCampus.name = createCampus.name.toLowerCase();
@@ -41,6 +43,7 @@ export class CampusController {
     return this.campusService.create(createCampus);
   }
 
+  //atualizar campus por ID
   @Post('/update/:id')
   async update(
     @Param('id') id: string,
@@ -78,6 +81,8 @@ export class CampusController {
   @ApiResponse({
     type: Campus,
   })
+
+  //buscar todos os campus
   @Get()
   async findAll() {
     try {

@@ -17,12 +17,14 @@ import { PlaceService } from './place.service';
 export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}
 
+  //criar lugar
   @Post()
   create(@Body() createPlace: Prisma.PlaceCreateInput) {
     createPlace.name = createPlace.name.toLowerCase();
     return this.placeService.create(createPlace);
   }
 
+  //buscar todos os lugares
   @Get()
   async findAll() {
     try {
@@ -41,6 +43,7 @@ export class PlaceController {
     }
   }
 
+  //atualizar lugar por ID
   @Post('/update/:id')
   async update(
     @Param('id') id: string,
@@ -63,6 +66,7 @@ export class PlaceController {
     }
   }
 
+  //Buscar lugar por ID
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -108,6 +112,7 @@ export class PlaceController {
     return places;
   }
 
+  //Deletar um lugar pelo ID
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
