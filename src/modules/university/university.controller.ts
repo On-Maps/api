@@ -6,6 +6,8 @@ import {
   Param,
   NotFoundException,
   InternalServerErrorException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
@@ -17,9 +19,20 @@ export class UniversityController {
   constructor(private readonly universityService: UniversityService) {}
 
   @Post()
-  create(@Body() createUniversity: Prisma.UniversityCreateInput) {
+  async create(@Body() createUniversity: Prisma.UniversityCreateInput) {
     createUniversity.name = createUniversity.name.toLowerCase();
     createUniversity.acronym = createUniversity.acronym.toUpperCase();
+
+    const university = await this.universityService.findAll();
+    university.forEach((university) => {
+      if (university.name === createUniversity.name) {
+        throw new HttpException(
+          `A universidade de nome '${createUniversity.name}' já existe.`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    });
+
     return this.universityService.create(createUniversity);
   }
 
