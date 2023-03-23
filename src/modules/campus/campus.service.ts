@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 
@@ -32,24 +28,12 @@ export class CampusService {
   }
 
   async findAll() {
-    try {
-      const campus = await this.prisma.campus.findMany({
-        include: {
-          university: true,
-          place: true,
-        },
-      });
-      if (campus.length === 0) {
-        throw new NotFoundException('Nenhum campus encontrado.');
-      }
-      return campus;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException(
-        'Ocorreu um erro ao buscar os campus.',
-      );
-    }
+    const campus = await this.prisma.campus.findMany({
+      include: {
+        university: true,
+        place: true,
+      },
+    });
+    return campus;
   }
 }

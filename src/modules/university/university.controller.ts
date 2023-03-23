@@ -27,7 +27,7 @@ export class UniversityController {
     university.forEach((university) => {
       if (university.name === createUniversity.name) {
         throw new HttpException(
-          `A universidade de nome '${createUniversity.name}' já existe.`,
+          `The university named '${createUniversity.name}' already exists.`,
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -37,8 +37,21 @@ export class UniversityController {
   }
 
   @Get()
-  findAll() {
-    return this.universityService.findAll();
+  async findAll() {
+    try {
+      const university = await this.universityService.findAll();
+      if (university.length === 0) {
+        throw new NotFoundException('No university found.');
+      }
+      return university;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while searching for universities.',
+      );
+    }
   }
 
   @Post('/update/:id')
@@ -54,17 +67,18 @@ export class UniversityController {
         UniversityId,
         updateUniversity,
       );
+      if (!updatedUniversity) {
+        throw new NotFoundException(`University with ID ${id} not found.`);
+      }
       return updatedUniversity;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
-          throw new NotFoundException(
-            `Universidade com o ID ${id} não encontrada.`,
-          );
+          throw new NotFoundException(`University with ID ${id} not found.`);
         }
       }
       throw new InternalServerErrorException(
-        'Ocorreu um erro ao atualizar a universidade.',
+        'An error occurred while updating the university.',
       );
     }
   }
