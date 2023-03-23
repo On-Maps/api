@@ -2,15 +2,62 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 
+export interface IPlace {
+  name: string;
+  piso?: number | null;
+  description?: string | null;
+  open: boolean;
+  timestamp: Date | string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  campus: number;
+  eventos?: number;
+  category?: number;
+  latitude?: [number];
+  longitude?: [number];
+}
+
 @Injectable()
 export class PlaceService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.PlaceCreateInput) {
+  async create({
+    name,
+    piso,
+    description,
+    open,
+    timestamp,
+    createdAt,
+    updatedAt,
+    campus,
+    eventos,
+    category,
+    latitude,
+    longitude,
+  }: IPlace) {
     const place = await this.prisma.place.create({
-      data,
+      data: {
+        name,
+        piso,
+        description,
+        open,
+        timestamp,
+        createdAt: createdAt || new Date(),
+        updatedAt: updatedAt || new Date(),
+        campus: {
+          connect: { id: campus },
+        },
+        latitude: {
+          create: latitude.map((lat) => ({ latitude: lat })),
+        },
+        longitude: {
+          create: longitude.map((long) => ({ longitude: long })),
+        },
+      },
       include: {
         campus: true,
+        latitude: true,
+        longitude: true,
       },
     });
 

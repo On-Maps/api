@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { PlaceService } from './place.service';
+import { IPlace, PlaceService } from './place.service';
 
 @ApiTags('Place')
 @Controller('place')
@@ -19,7 +19,7 @@ export class PlaceController {
 
   //criar lugar
   @Post()
-  create(@Body() createPlace: Prisma.PlaceCreateInput) {
+  create(@Body() createPlace: IPlace) {
     createPlace.name = createPlace.name.toLowerCase();
     return this.placeService.create(createPlace);
   }
