@@ -13,8 +13,10 @@ export interface IPlace {
   campus: number;
   eventos?: number;
   category?: number;
-  latitude?: [number];
-  longitude?: [number];
+  position?: {
+    latitude: number;
+    longitude: number;
+  }[];
 }
 
 @Injectable()
@@ -32,8 +34,7 @@ export class PlaceService {
     campus,
     eventos,
     category,
-    latitude,
-    longitude,
+    position,
   }: IPlace) {
     const place = await this.prisma.place.create({
       data: {
@@ -47,17 +48,16 @@ export class PlaceService {
         campus: {
           connect: { id: campus },
         },
-        latitude: {
-          create: latitude.map((lat) => ({ latitude: lat })),
-        },
-        longitude: {
-          create: longitude.map((long) => ({ longitude: long })),
+        position: {
+          create: position.map((pos) => ({
+            latitude: pos.latitude,
+            longitude: pos.longitude,
+          })),
         },
       },
       include: {
         campus: true,
-        latitude: true,
-        longitude: true,
+        position: true,
       },
     });
 
@@ -69,8 +69,7 @@ export class PlaceService {
       include: {
         campus: true,
         eventos: true,
-        latitude: true,
-        longitude: true,
+        position: true,
         category: true,
       },
     });
@@ -93,8 +92,7 @@ export class PlaceService {
       include: {
         campus: true,
         eventos: true,
-        latitude: true,
-        longitude: true,
+        position: true,
         category: true,
       },
     });
@@ -119,8 +117,7 @@ export class PlaceService {
       include: {
         campus: true,
         eventos: true,
-        latitude: true,
-        longitude: true,
+        position: true,
         category: true,
       },
     });
@@ -142,8 +139,7 @@ export class PlaceService {
       include: {
         campus: true,
         eventos: true,
-        latitude: true,
-        longitude: true,
+        position: true,
         category: true,
       },
     });
@@ -163,8 +159,7 @@ export class PlaceService {
       include: {
         campus: true,
         eventos: true,
-        latitude: true,
-        longitude: true,
+        position: true,
         category: true,
       },
     });
