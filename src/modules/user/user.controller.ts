@@ -10,6 +10,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { UserService } from './user.service';
 
+function validateEmail(email: string) {
+  const emailRegex = /^\S+@\S+\.\S+$/;
+  return emailRegex.test(email);
+}
+
 @ApiTags('User')
 @Controller('user')
 export class UserController {
@@ -17,9 +22,21 @@ export class UserController {
 
   //criar usuário
   @Post()
-  async create(@Body() data: Prisma.UserCreateInput) {
+  async create(
+    @Body()
+    data: Prisma.UserCreateInput,
+  ) {
     try {
       const user = await this.userService.findAll();
+      const userEmail = data.email;
+
+      if (!validateEmail(userEmail)) {
+        throw new HttpException(
+          `The email '${userEmail}' is not in a valid format.`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       user.forEach((user) => {
         if (user.email === data.email) {
           throw new HttpException(
@@ -33,6 +50,7 @@ export class UserController {
       if (error instanceof HttpException) {
         throw error;
       }
+      console.log(error);
       throw new InternalServerErrorException(
         'An error occurred while registering user',
       );
