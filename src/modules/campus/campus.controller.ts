@@ -14,6 +14,16 @@ import { Prisma } from '@prisma/client';
 import { Campus } from 'src/_gen/prisma-class/campus';
 import { CampusService } from './campus.service';
 
+function validateEmail(email: string) {
+  const emailRegex = /^\S+@\S+\.\S+$/;
+  return emailRegex.test(email);
+}
+
+function validatePhone(phone: string) {
+  const phoneRegex = /^\d{11}$/;
+  return phoneRegex.test(phone);
+}
+
 @ApiTags('Campus')
 @Controller('campus')
 export class CampusController {
@@ -42,6 +52,19 @@ export class CampusController {
     createCampus.name = createCampus.name.toLowerCase();
     createCampus.city = createCampus.city.toLowerCase();
     createCampus.state = createCampus.state.toLowerCase();
+
+    if (!validatePhone(createCampus.phone)) {
+      throw new HttpException(
+        `The phone '${createCampus.phone}' is not in a valid format.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!validateEmail(createCampus.email)) {
+      throw new HttpException(
+        `The email '${createCampus.email}' is not in a valid format.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     const campus = await this.campusService.findAll();
     campus.forEach((campus) => {
