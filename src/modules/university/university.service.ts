@@ -34,4 +34,14 @@ export class UniversityService {
 
     return university;
   }
+
+  async deleteUniversity(id: number) {
+    const university = await this.prisma.university.delete({
+      include: {
+        campuses: true,
+      },
+      where: { id },
+    });
+    return university;
+  }
 }
