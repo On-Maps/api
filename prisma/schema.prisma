@@ -23,7 +23,7 @@ model Campus {
   state       String
   phone       String?
   email       String?
-  university  University @relation(fields: [universityId], references: [id])
+  university  University @relation(fields: [universityId], references: [id], onDelete: Cascade)
   universityId Int
   place       Place[]
   createdAt   DateTime @default(now())
@@ -43,7 +43,7 @@ model University {
 model Place {
   id          Int      @id @default(autoincrement())
   name        String
-  campus      Campus @relation(fields: [campusId], references: [id])
+  campus      Campus @relation(fields: [campusId], references: [id], onDelete: Cascade)
   campusId    Int
   piso        Int?
   description String?
@@ -60,7 +60,7 @@ model Position {
   id          Int      @id @default(autoincrement())
   latitude    Float
   longitude   Float
-  place       Place @relation(fields: [placeId], references: [id])
+  place       Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
   placeId     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -81,7 +81,7 @@ model Evento {
   name        String
   description String?
   date        DateTime?
-  place        Place @relation(fields: [placeId], references: [id])
+  place        Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
   placeId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

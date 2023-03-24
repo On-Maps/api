@@ -8,6 +8,7 @@ import {
   InternalServerErrorException,
   HttpException,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
@@ -91,6 +92,26 @@ export class UniversityController {
       }
       throw new InternalServerErrorException(
         'An error occurred while updating the university.',
+      );
+    }
+  }
+
+  @Delete('/delete/:id')
+  async delete(@Param('id') id: string) {
+    try {
+      const UniversityId = parseInt(id, 10);
+      const deletedUniversity = await this.universityService.deleteUniversity(
+        UniversityId,
+      );
+      return deletedUniversity;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`University with ID ${id} not found.`);
+        }
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while deleting the university.',
       );
     }
   }
