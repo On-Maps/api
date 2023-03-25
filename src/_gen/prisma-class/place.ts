@@ -1,4 +1,5 @@
 import { Campus } from './campus';
+import { Image } from './image';
 import { Evento } from './evento';
 import { Category } from './category';
 import { Position } from './position';
@@ -16,6 +17,9 @@ export class Place {
 
   @ApiProperty({ type: Number })
   campusId: number;
+
+  @ApiProperty({ isArray: true, type: () => Image })
+  image: Image[];
 
   @ApiPropertyOptional({ type: Number })
   piso?: number;
