@@ -11,12 +11,12 @@ export interface IPlace {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   campus: number;
-  eventos?: number;
   category?: number;
   position?: {
     latitude: number;
     longitude: number;
   }[];
+  files?: Express.Multer.File[];
 }
 
 @Injectable()
@@ -32,9 +32,9 @@ export class PlaceService {
     createdAt,
     updatedAt,
     campus,
-    eventos,
     category,
     position,
+    files,
   }: IPlace) {
     const place = await this.prisma.place.create({
       data: {
@@ -54,8 +54,15 @@ export class PlaceService {
             longitude: pos.longitude,
           })),
         },
+        image: {
+          create: files.map((file) => ({
+            name: file.filename,
+            url: file.path,
+          })),
+        },
       },
       include: {
+        // category: true,
         campus: true,
         position: true,
       },

@@ -7,9 +7,14 @@ import {
   Delete,
   InternalServerErrorException,
   NotFoundException,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { IPlace, PlaceService } from './place.service';
 
 @ApiTags('Place')
@@ -19,8 +24,29 @@ export class PlaceController {
 
   //criar lugar
   @Post()
-  create(@Body() createPlace: IPlace) {
+  @UseInterceptors(
+    FilesInterceptor('file', 10, {
+      storage: diskStorage({
+        destination: './tmp/place',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+
+          const ext = extname(file.originalname);
+
+          const filename = `${ext}-${uniqueSuffix}-${ext}`;
+
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  create(
+    @Body() createPlace: IPlace,
+    @UploadedFiles() files?: Array<Express.Multer.File>,
+  ) {
     createPlace.name = createPlace.name.toLowerCase();
+    files ? (createPlace.files = files) : null;
     return this.placeService.create(createPlace);
   }
 
