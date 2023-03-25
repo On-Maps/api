@@ -36,4 +36,15 @@ export class CampusService {
     });
     return campus;
   }
+
+  async deleteCampus(id: number) {
+    const campus = await this.prisma.campus.delete({
+      include: {
+        place: true,
+      },
+      where: { id },
+    });
+
+    return campus;
+  }
 }

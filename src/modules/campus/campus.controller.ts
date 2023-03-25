@@ -8,6 +8,7 @@ import {
   InternalServerErrorException,
   HttpException,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
@@ -132,6 +133,24 @@ export class CampusController {
       }
       throw new InternalServerErrorException(
         'An error occurred while fetching the campus.',
+      );
+    }
+  }
+
+  @Delete('/delete/:id')
+  async delete(@Param('id') id: string) {
+    try {
+      const CampusId = parseInt(id, 10);
+      const deletedCampus = await this.campusService.deleteCampus(CampusId);
+      return deletedCampus;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`Campus with ID ${id} not found.`);
+        }
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while deleting the campus.',
       );
     }
   }
