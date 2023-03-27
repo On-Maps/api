@@ -1,5 +1,5 @@
 import { Campus } from './campus';
-import { Evento } from './evento';
+import { Event } from './event';
 import { Category } from './category';
 import { Position } from './position';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -23,8 +23,8 @@ export class Place {
   @ApiPropertyOptional({ type: String })
   description?: string;
 
-  @ApiProperty({ isArray: true, type: () => Evento })
-  eventos: Evento[];
+  @ApiProperty({ isArray: true, type: () => Event })
+  eventos: Event[];
 
   @ApiProperty({ type: Boolean })
   open: boolean;
