@@ -48,7 +48,7 @@ model Place {
   image       Image[]
   piso        Int?
   description String?
-  eventos     Evento[]
+  eventos     Event[]
   open        Boolean
   timestamp   DateTime
   category    Category[]
@@ -86,7 +86,7 @@ model Category {
   updatedAt   DateTime @updatedAt
 }
 
-model Evento {
+model Event {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
