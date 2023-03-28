@@ -75,7 +75,7 @@ export class PlaceService {
     const places = await this.prisma.place.findMany({
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -98,7 +98,7 @@ export class PlaceService {
       where: { id },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -123,7 +123,7 @@ export class PlaceService {
       },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -145,7 +145,7 @@ export class PlaceService {
       where: { campusId: id },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -165,7 +165,7 @@ export class PlaceService {
       },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
