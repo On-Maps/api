@@ -56,8 +56,12 @@ export class UniversityController {
   ) {
     try {
       const UniversityId = parseInt(id, 10);
-      updateUniversity.name = String(updateUniversity.name).toLowerCase();
-      updateUniversity.acronym = String(updateUniversity.acronym).toUpperCase();
+      if (updateUniversity.name)
+        updateUniversity.name = String(updateUniversity.name).toLowerCase();
+      if (updateUniversity.acronym)
+        updateUniversity.acronym = String(
+          updateUniversity.acronym,
+        ).toUpperCase();
       const updatedUniversity = await this.universityService.update(
         UniversityId,
         updateUniversity,

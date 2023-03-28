@@ -88,9 +88,12 @@ export class CampusController {
   ) {
     try {
       const placeId = parseInt(id, 10);
-      updateCampus.name = String(updateCampus.name).toLowerCase();
-      updateCampus.city = String(updateCampus.city).toLowerCase();
-      updateCampus.state = String(updateCampus.state).toLowerCase();
+      if (updateCampus.name)
+        updateCampus.name = String(updateCampus.name).toLowerCase();
+      if (updateCampus.city)
+        updateCampus.city = String(updateCampus.city).toLowerCase();
+      if (updateCampus.state)
+        updateCampus.state = String(updateCampus.state).toLowerCase();
       const updatedCampus = await this.campusService.update(
         placeId,
         updateCampus,
