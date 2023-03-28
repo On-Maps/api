@@ -50,7 +50,6 @@ export class UserController {
       if (error instanceof HttpException) {
         throw error;
       }
-      console.log(error);
       throw new InternalServerErrorException(
         'An error occurred while registering user',
       );

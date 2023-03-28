@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Optional,
+  Put,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
@@ -53,6 +54,32 @@ export class PlaceController {
     return this.placeService.create(createPlace);
   }
 
+  //atualizar lugar por ID
+  @Put('/update/:id')
+  async update(
+    @Param('id') id: string,
+    @Body() updatePlace: Prisma.PlaceUpdateInput,
+  ) {
+    try {
+      const placeId = parseInt(id, 10);
+      if (updatePlace.name)
+        updatePlace.name = String(updatePlace.name).toLowerCase();
+      if (updatePlace.description)
+        updatePlace.description = String(updatePlace.description).toLowerCase();
+      const updatedPlace = await this.placeService.update(placeId, updatePlace);
+      return updatedPlace;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`Place with ID ${id} not found.`);
+        }
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while updating the place.',
+      );
+    }
+  }
+
   //buscar todos os lugares
   @Get()
   async findAll() {
@@ -68,31 +95,6 @@ export class PlaceController {
       }
       throw new InternalServerErrorException(
         'An error occurred while fetching the places.',
-      );
-    }
-  }
-
-  //atualizar lugar por ID
-  @Post('/update/:id')
-  async update(
-    @Param('id') id: string,
-    @Body() updatePlace: Prisma.PlaceUpdateInput,
-  ) {
-    try {
-      const placeId = parseInt(id, 10);
-      updatePlace.name = String(updatePlace.name).toLowerCase();
-      if (updatePlace.description)
-        updatePlace.description = String(updatePlace.description).toLowerCase();
-      const updatedPlace = await this.placeService.update(placeId, updatePlace);
-      return updatedPlace;
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-          throw new NotFoundException(`Place with ID ${id} not found.`);
-        }
-      }
-      throw new InternalServerErrorException(
-        'An error occurred while updating the place.',
       );
     }
   }
@@ -145,10 +147,10 @@ export class PlaceController {
 
   //Deletar um lugar pelo ID
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async delete(@Param('id') id: string) {
     try {
       const placeId = parseInt(id, 10);
-      const place = await this.placeService.remove(placeId);
+      const place = await this.placeService.delete(placeId);
       if (!place) {
         throw new NotFoundException(`Place with ID ${id} not found.`);
       }

@@ -71,19 +71,6 @@ export class PlaceService {
     return place;
   }
 
-  async findAll() {
-    const places = await this.prisma.place.findMany({
-      include: {
-        campus: true,
-        eventos: true,
-        position: true,
-        category: true,
-      },
-    });
-
-    return places;
-  }
-
   async update(id: number, data: Prisma.PlaceUpdateInput) {
     const place = await this.prisma.place.update({
       where: { id },
@@ -93,12 +80,25 @@ export class PlaceService {
     return place;
   }
 
+  async findAll() {
+    const places = await this.prisma.place.findMany({
+      include: {
+        campus: true,
+        events: true,
+        position: true,
+        category: true,
+      },
+    });
+
+    return places;
+  }
+
   async findOne(id: number) {
     const place = await this.prisma.place.findUnique({
       where: { id },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -123,7 +123,7 @@ export class PlaceService {
       },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -132,20 +132,12 @@ export class PlaceService {
     return places;
   }
 
-  async remove(id: number) {
-    const place = await this.prisma.place.delete({
-      where: { id },
-    });
-
-    return place;
-  }
-
   async findAllByCampus(id: number) {
     const places = await this.prisma.place.findMany({
       where: { campusId: id },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -165,12 +157,20 @@ export class PlaceService {
       },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
     });
 
     return places;
+  }
+
+  async delete(id: number) {
+    const place = await this.prisma.place.delete({
+      where: { id },
+    });
+
+    return place;
   }
 }

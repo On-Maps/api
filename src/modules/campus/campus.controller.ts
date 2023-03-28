@@ -9,6 +9,7 @@ import {
   HttpException,
   HttpStatus,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
@@ -80,16 +81,19 @@ export class CampusController {
   }
 
   //atualizar campus por ID
-  @Post('/update/:id')
+  @Put('/update/:id')
   async update(
     @Param('id') id: string,
     @Body() updateCampus: Prisma.CampusUpdateInput,
   ) {
     try {
       const placeId = parseInt(id, 10);
-      updateCampus.name = String(updateCampus.name).toLowerCase();
-      updateCampus.city = String(updateCampus.city).toLowerCase();
-      updateCampus.state = String(updateCampus.state).toLowerCase();
+      if (updateCampus.name)
+        updateCampus.name = String(updateCampus.name).toLowerCase();
+      if (updateCampus.city)
+        updateCampus.city = String(updateCampus.city).toLowerCase();
+      if (updateCampus.state)
+        updateCampus.state = String(updateCampus.state).toLowerCase();
       const updatedCampus = await this.campusService.update(
         placeId,
         updateCampus,
@@ -137,6 +141,7 @@ export class CampusController {
     }
   }
 
+  //deletar campus por ID
   @Delete('/delete/:id')
   async delete(@Param('id') id: string) {
     try {
