@@ -87,6 +87,7 @@ export class PlaceService {
         events: true,
         position: true,
         category: true,
+        image: true,
       },
     });
 
@@ -101,6 +102,7 @@ export class PlaceService {
         events: true,
         position: true,
         category: true,
+        image: true,
       },
     });
 
@@ -126,6 +128,7 @@ export class PlaceService {
         events: true,
         position: true,
         category: true,
+        image: true,
       },
     });
 
@@ -140,6 +143,7 @@ export class PlaceService {
         events: true,
         position: true,
         category: true,
+        image: true,
       },
     });
 
@@ -160,6 +164,7 @@ export class PlaceService {
         events: true,
         position: true,
         category: true,
+        image: true,
       },
     });
 
