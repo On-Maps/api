@@ -4,17 +4,17 @@ import { PrismaService } from 'src/database/prisma.service';
 
 export interface IPlace {
   name: string;
-  piso?: number | null;
+  piso?: string | null;
   description?: string | null;
   open: boolean;
   timestamp: Date | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  campus: number;
-  category?: number;
+  campus: string;
+  category?: string;
   position?: {
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
   }[];
   files?: Express.Multer.File[];
 }
@@ -39,30 +39,30 @@ export class PlaceService {
     const place = await this.prisma.place.create({
       data: {
         name,
-        piso,
+        piso: Number(piso),
         description,
-        open,
+        open: open == true ? true : false,
         timestamp,
         createdAt: createdAt || new Date(),
         updatedAt: updatedAt || new Date(),
         campus: {
-          connect: { id: campus },
+          connect: { id: Number(campus) },
         },
         position: {
           create: position.map((pos) => ({
-            latitude: pos.latitude,
-            longitude: pos.longitude,
+            latitude: Number(pos.latitude),
+            longitude: Number(pos.longitude),
           })),
         },
         image: {
           create: files.map((file) => ({
-            name: file.filename,
             url: file.path,
           })),
         },
       },
       include: {
         // category: true,
+        image: true,
         campus: true,
         position: true,
       },

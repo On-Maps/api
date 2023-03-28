@@ -9,6 +9,7 @@ import {
   NotFoundException,
   UseInterceptors,
   UploadedFiles,
+  Optional,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
@@ -43,7 +44,9 @@ export class PlaceController {
   )
   create(
     @Body() createPlace: IPlace,
-    @UploadedFiles() files?: Array<Express.Multer.File>,
+    @Optional()
+    @UploadedFiles()
+    files?: Array<Express.Multer.File>,
   ) {
     createPlace.name = createPlace.name.toLowerCase();
     files ? (createPlace.files = files) : null;
