@@ -8,8 +8,8 @@ import { Category } from './_gen/prisma-class/category';
 import { University } from './_gen/prisma-class/university';
 import { User } from './_gen/prisma-class/user';
 import { UserToken } from './_gen/prisma-class/user_token';
-import { Evento } from './_gen/prisma-class/evento';
 import { Place } from './_gen/prisma-class/place';
+import { Event } from './_gen/prisma-class/event';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,7 +26,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config, {
-    extraModels: [Campus, Category, Place, University, User, UserToken, Evento],
+    extraModels: [Campus, Category, Place, University, User, UserToken, Event],
   });
   SwaggerModule.setup('api', app, document);
 

@@ -1,6 +1,6 @@
 import { Campus } from './campus';
 import { Image } from './image';
-import { Evento } from './evento';
+import { Event } from './event';
 import { Category } from './category';
 import { Position } from './position';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -22,19 +22,22 @@ export class Place {
   image: Image[];
 
   @ApiPropertyOptional({ type: Number })
-  piso?: number;
+  floor?: number;
 
   @ApiPropertyOptional({ type: String })
   description?: string;
 
-  @ApiProperty({ isArray: true, type: () => Evento })
-  eventos: Evento[];
+  @ApiProperty({ isArray: true, type: () => Event })
+  events: Event[];
 
   @ApiProperty({ type: Boolean })
   open: boolean;
 
   @ApiProperty({ type: Date })
   timestamp: Date;
+
+  @ApiPropertyOptional({ type: String })
+  building?: string;
 
   @ApiProperty({ isArray: true, type: () => Category })
   category: Category[];

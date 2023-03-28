@@ -1,7 +1,7 @@
 import { Place } from './place';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class Evento {
+export class Event {
   @ApiProperty({ type: Number })
   id: number;
 

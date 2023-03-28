@@ -4,7 +4,7 @@ import { PrismaService } from 'src/database/prisma.service';
 
 export interface IPlace {
   name: string;
-  piso?: string | null;
+  floor?: string | null;
   description?: string | null;
   open: boolean;
   timestamp: Date | string;
@@ -25,7 +25,7 @@ export class PlaceService {
 
   async create({
     name,
-    piso,
+    floor,
     description,
     open,
     timestamp,
@@ -39,7 +39,7 @@ export class PlaceService {
     const place = await this.prisma.place.create({
       data: {
         name,
-        piso: Number(piso),
+        floor: Number(floor),
         description,
         open: open == true ? true : false,
         timestamp,
@@ -84,7 +84,7 @@ export class PlaceService {
     const places = await this.prisma.place.findMany({
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -98,7 +98,7 @@ export class PlaceService {
       where: { id },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -123,7 +123,7 @@ export class PlaceService {
       },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -137,7 +137,7 @@ export class PlaceService {
       where: { campusId: id },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
@@ -157,7 +157,7 @@ export class PlaceService {
       },
       include: {
         campus: true,
-        eventos: true,
+        events: true,
         position: true,
         category: true,
       },
