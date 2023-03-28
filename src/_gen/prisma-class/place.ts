@@ -1,9 +1,9 @@
 import { Campus } from './campus';
+import { Image } from './image';
 import { Event } from './event';
 import { Category } from './category';
 import { Position } from './position';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Image } from './image';
 
 export class Place {
   @ApiProperty({ type: Number })

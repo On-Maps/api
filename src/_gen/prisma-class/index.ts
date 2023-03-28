@@ -8,7 +8,6 @@ import { Event as _Event } from './event';
 import { User as _User } from './user';
 import { UserToken as _UserToken } from './user_token';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace PrismaModel {
   export class Campus extends _Campus {}
   export class University extends _University {}
