@@ -45,13 +45,23 @@ model Place {
   name        String
   campus      Campus @relation(fields: [campusId], references: [id], onDelete: Cascade)
   campusId    Int
+  image       Image[]
   piso        Int?
   description String?
-  eventos     Evento[]
+  eventos     Event[]
   open        Boolean
   timestamp   DateTime
   category    Category[]
   position    Position[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  url         String
+  place       Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -76,7 +86,7 @@ model Category {
   updatedAt   DateTime @updatedAt
 }
 
-model Evento {
+model Event {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
