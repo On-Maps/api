@@ -48,25 +48,6 @@ export class UniversityController {
     }
   }
 
-  //buscar todas as universidades
-  @Get()
-  async findAll() {
-    try {
-      const university = await this.universityService.findAll();
-      if (university.length === 0) {
-        throw new NotFoundException('No university found.');
-      }
-      return university;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException(
-        'An error occurred while searching for universities.',
-      );
-    }
-  }
-
   //atualizar universidade por ID
   @Put('/update/:id')
   async update(
@@ -97,11 +78,31 @@ export class UniversityController {
     }
   }
 
+  //buscar todas as universidades
+  @Get()
+  async findAll() {
+    try {
+      const university = await this.universityService.findAll();
+      if (university.length === 0) {
+        throw new NotFoundException('No university found.');
+      }
+      return university;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while searching for universities.',
+      );
+    }
+  }
+
+  //deletar universidade por ID
   @Delete('/delete/:id')
   async delete(@Param('id') id: string) {
     try {
       const UniversityId = parseInt(id, 10);
-      const deletedUniversity = await this.universityService.deleteUniversity(
+      const deletedUniversity = await this.universityService.delete(
         UniversityId,
       );
       return deletedUniversity;

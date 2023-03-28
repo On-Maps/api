@@ -21,6 +21,11 @@ export class UserService {
     return user;
   }
 
+  async findAll() {
+    const users = await this.prisma.user.findMany();
+    return users;
+  }
+
   async login(email: string, password: string) {
     try {
       const user = await this.prisma.user.findUnique({
@@ -64,10 +69,5 @@ export class UserService {
     } catch (error) {
       return error.message;
     }
-  }
-
-  async findAll() {
-    const users = await this.prisma.user.findMany();
-    return users;
   }
 }

@@ -71,6 +71,15 @@ export class PlaceService {
     return place;
   }
 
+  async update(id: number, data: Prisma.PlaceUpdateInput) {
+    const place = await this.prisma.place.update({
+      where: { id },
+      data,
+    });
+
+    return place;
+  }
+
   async findAll() {
     const places = await this.prisma.place.findMany({
       include: {
@@ -82,15 +91,6 @@ export class PlaceService {
     });
 
     return places;
-  }
-
-  async update(id: number, data: Prisma.PlaceUpdateInput) {
-    const place = await this.prisma.place.update({
-      where: { id },
-      data,
-    });
-
-    return place;
   }
 
   async findOne(id: number) {
@@ -132,14 +132,6 @@ export class PlaceService {
     return places;
   }
 
-  async remove(id: number) {
-    const place = await this.prisma.place.delete({
-      where: { id },
-    });
-
-    return place;
-  }
-
   async findAllByCampus(id: number) {
     const places = await this.prisma.place.findMany({
       where: { campusId: id },
@@ -172,5 +164,13 @@ export class PlaceService {
     });
 
     return places;
+  }
+
+  async delete(id: number) {
+    const place = await this.prisma.place.delete({
+      where: { id },
+    });
+
+    return place;
   }
 }

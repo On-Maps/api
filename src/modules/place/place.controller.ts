@@ -54,25 +54,6 @@ export class PlaceController {
     return this.placeService.create(createPlace);
   }
 
-  //buscar todos os lugares
-  @Get()
-  async findAll() {
-    try {
-      const place = await this.placeService.findAll();
-      if (place.length === 0) {
-        throw new NotFoundException('No place found.');
-      }
-      return place;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException(
-        'An error occurred while fetching the places.',
-      );
-    }
-  }
-
   //atualizar lugar por ID
   @Put('/update/:id')
   async update(
@@ -92,6 +73,25 @@ export class PlaceController {
       }
       throw new InternalServerErrorException(
         'An error occurred while updating the place.',
+      );
+    }
+  }
+
+  //buscar todos os lugares
+  @Get()
+  async findAll() {
+    try {
+      const place = await this.placeService.findAll();
+      if (place.length === 0) {
+        throw new NotFoundException('No place found.');
+      }
+      return place;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        'An error occurred while fetching the places.',
       );
     }
   }
@@ -144,10 +144,10 @@ export class PlaceController {
 
   //Deletar um lugar pelo ID
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async delete(@Param('id') id: string) {
     try {
       const placeId = parseInt(id, 10);
-      const place = await this.placeService.remove(placeId);
+      const place = await this.placeService.delete(placeId);
       if (!place) {
         throw new NotFoundException(`Place with ID ${id} not found.`);
       }

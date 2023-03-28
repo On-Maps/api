@@ -17,15 +17,6 @@ export class UniversityService {
     return university;
   }
 
-  async findAll() {
-    const universities = await this.prisma.university.findMany({
-      include: {
-        campuses: true,
-      },
-    });
-    return universities;
-  }
-
   async update(id: number, data: Prisma.UniversityUpdateInput) {
     const university = await this.prisma.university.update({
       where: { id },
@@ -35,7 +26,16 @@ export class UniversityService {
     return university;
   }
 
-  async deleteUniversity(id: number) {
+  async findAll() {
+    const universities = await this.prisma.university.findMany({
+      include: {
+        campuses: true,
+      },
+    });
+    return universities;
+  }
+
+  async delete(id: number) {
     const university = await this.prisma.university.delete({
       include: {
         campuses: true,
