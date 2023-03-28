@@ -3,6 +3,8 @@ import { Image } from './image';
 import { Event } from './event';
 import { Category } from './category';
 import { Position } from './position';
+import { Equipment } from './equipment';
+import { Responsible } from './responsible';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Place {
@@ -27,6 +29,12 @@ export class Place {
   @ApiPropertyOptional({ type: String })
   description?: string;
 
+  @ApiProperty({ type: Boolean })
+  acessibility: boolean;
+
+  @ApiPropertyOptional({ type: Number })
+  capacity?: number;
+
   @ApiProperty({ isArray: true, type: () => Event })
   events: Event[];
 
@@ -44,6 +52,12 @@ export class Place {
 
   @ApiProperty({ isArray: true, type: () => Position })
   position: Position[];
+
+  @ApiProperty({ isArray: true, type: () => Equipment })
+  equipment: Equipment[];
+
+  @ApiProperty({ isArray: true, type: () => Responsible })
+  responsible: Responsible[];
 
   @ApiProperty({ type: Date })
   createdAt: Date;

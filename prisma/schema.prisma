@@ -48,12 +48,16 @@ model Place {
   image       Image[]
   floor        Int?
   description String?
+  acessibility Boolean
+  capacity     Int?
   events     Event[]
   open        Boolean
   timestamp   DateTime
   building    String?
   category    Category[]
   position    Position[]
+  equipment   Equipment[]
+  responsible Responsible[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -114,6 +118,27 @@ model UserToken {
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
   expiresDate DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Equipment {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  place       Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Responsible {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String
+  place       Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

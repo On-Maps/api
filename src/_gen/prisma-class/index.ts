@@ -7,6 +7,8 @@ import { Category as _Category } from './category';
 import { Event as _Event } from './event';
 import { User as _User } from './user';
 import { UserToken as _UserToken } from './user_token';
+import { Equipment as _Equipment } from './equipment';
+import { Responsible as _Responsible } from './responsible';
 
 export namespace PrismaModel {
   export class Campus extends _Campus {}
@@ -18,6 +20,8 @@ export namespace PrismaModel {
   export class Event extends _Event {}
   export class User extends _User {}
   export class UserToken extends _UserToken {}
+  export class Equipment extends _Equipment {}
+  export class Responsible extends _Responsible {}
 
   export const extraModels = [
     Campus,
@@ -29,5 +33,7 @@ export namespace PrismaModel {
     Event,
     User,
     UserToken,
+    Equipment,
+    Responsible,
   ];
 }
