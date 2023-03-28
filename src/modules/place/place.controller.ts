@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Optional,
+  Put,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
@@ -73,7 +74,7 @@ export class PlaceController {
   }
 
   //atualizar lugar por ID
-  @Post('/update/:id')
+  @Put('/update/:id')
   async update(
     @Param('id') id: string,
     @Body() updatePlace: Prisma.PlaceUpdateInput,

@@ -9,6 +9,7 @@ import {
   HttpException,
   HttpStatus,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
@@ -67,7 +68,7 @@ export class UniversityController {
   }
 
   //atualizar universidade por ID
-  @Post('/update/:id')
+  @Put('/update/:id')
   async update(
     @Param('id') id: string,
     @Body() updateUniversity: Prisma.UniversityUpdateInput,
