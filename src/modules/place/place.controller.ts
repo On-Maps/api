@@ -52,6 +52,8 @@ export class PlaceController {
     try {
       const placeId = parseInt(id, 10);
       updatePlace.name = String(updatePlace.name).toLowerCase();
+      if (updatePlace.description)
+        updatePlace.description = String(updatePlace.description).toLowerCase();
       const updatedPlace = await this.placeService.update(placeId, updatePlace);
       return updatedPlace;
     } catch (error) {
