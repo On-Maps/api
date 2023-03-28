@@ -153,4 +153,56 @@ export class EventService {
       );
     }
   }
+
+  async getEventsByPlaceName(placeName: string) {
+    try {
+      const events = await this.prisma.event.findMany({
+        where: {
+          place: {
+            name: {
+              contains: placeName,
+            },
+          },
+        },
+        include: {
+          place: true,
+        },
+      });
+      if (events.length === 0)
+        throw new HttpException('No event found.', HttpStatus.NOT_FOUND);
+      return events;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'An error occurred while fetching the events.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getEventsByPlaceId(placeId: number) {
+    try {
+      const events = await this.prisma.event.findMany({
+        where: {
+          placeId: placeId,
+        },
+        include: {
+          place: true,
+        },
+      });
+      if (events.length === 0)
+        throw new HttpException('No event found.', HttpStatus.NOT_FOUND);
+      return events;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'An error occurred while fetching the events.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

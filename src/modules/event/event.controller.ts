@@ -32,6 +32,19 @@ export class EventController {
     return this.eventService.getById(id);
   }
 
+  //buscar evento por nome do place
+  @Get('place/:placeName')
+  async getEventByPlaceName(@Param('placeName') name: string) {
+    return this.eventService.getEventsByPlaceName(name);
+  }
+
+  //buscar evento pelo id do place
+  @Get('place/id/:placeId')
+  async getEventByPlaceId(@Param('placeId') id: string) {
+    const placeId = parseInt(id, 10);
+    return this.eventService.getEventsByPlaceId(placeId);
+  }
+
   //atualizar evento por ID
   @Put('/update/:id')
   async updateEvent(
