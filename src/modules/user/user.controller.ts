@@ -29,6 +29,9 @@ export class UserController {
     data: Prisma.UserCreateInput,
   ) {
     try {
+      if (data.name) {
+        data.name = String(data.name).toLowerCase();
+      }
       const user = await this.userService.findAll();
       const userEmail = data.email;
 
@@ -62,6 +65,9 @@ export class UserController {
   @Put('/update/:id')
   async update(@Param('id') id: string, @Body() data: Prisma.UserUpdateInput) {
     try {
+      if (data.name) {
+        data.name = String(data.name).toLowerCase();
+      }
       const user = await this.userService.findAll();
       const userEmail = data.email;
       const userId = Number(id);
