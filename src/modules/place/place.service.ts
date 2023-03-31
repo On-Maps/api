@@ -20,10 +20,7 @@ export interface IPlace {
     longitude: string;
   }[];
   files?: Express.Multer.File[];
-  equipment?: {
-    name: string;
-    description: string;
-  }[];
+  equipment?: string;
   responsible?: {
     name: string;
     email: string;
@@ -44,13 +41,13 @@ export class PlaceService {
     open,
     timestamp,
     building,
+    equipment,
     createdAt,
     updatedAt,
     campus,
     category,
     position,
     files,
-    equipment,
     responsible,
   }: IPlace) {
     const place = await this.prisma.place.create({
@@ -60,9 +57,10 @@ export class PlaceService {
         description,
         acessibility,
         capacity: Number(capacity),
-        open: open == true ? true : false,
+        open24h: open == true ? true : false,
         timestamp,
         building,
+        equipment,
         createdAt: createdAt || new Date(),
         updatedAt: updatedAt || new Date(),
         campus: {
@@ -77,12 +75,6 @@ export class PlaceService {
         image: {
           create: files.map((file) => ({
             url: file.path,
-          })),
-        },
-        equipment: {
-          create: equipment.map((equip) => ({
-            name: equip.name,
-            description: equip.description,
           })),
         },
         responsible: {
@@ -121,7 +113,6 @@ export class PlaceService {
         position: true,
         category: true,
         image: true,
-        equipment: true,
         responsible: true,
       },
     });
@@ -138,7 +129,6 @@ export class PlaceService {
         position: true,
         category: true,
         image: true,
-        equipment: true,
         responsible: true,
       },
     });
@@ -166,7 +156,6 @@ export class PlaceService {
         position: true,
         category: true,
         image: true,
-        equipment: true,
         responsible: true,
       },
     });
@@ -183,7 +172,6 @@ export class PlaceService {
         position: true,
         category: true,
         image: true,
-        equipment: true,
         responsible: true,
       },
     });
@@ -206,7 +194,6 @@ export class PlaceService {
         position: true,
         category: true,
         image: true,
-        equipment: true,
         responsible: true,
       },
     });
