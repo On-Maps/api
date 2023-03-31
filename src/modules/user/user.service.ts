@@ -21,6 +21,17 @@ export class UserService {
     return user;
   }
 
+  async update(id: number, data: Prisma.UserUpdateInput) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
+      data,
+    });
+
+    return user;
+  }
+
   async findAll() {
     const users = await this.prisma.user.findMany();
     return users;
