@@ -17,17 +17,17 @@ datasource db {
 
 
 model Campus {
-  id          Int      @id @default(autoincrement())
-  name        String
-  city        String
-  state       String
-  phone       String?
-  email       String?
-  university  University @relation(fields: [universityId], references: [id], onDelete: Cascade)
-  universityId Int
-  place       Place[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  city          String
+  state         String
+  phone         String?
+  email         String?
+  university    University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  universityId  Int
+  place         Place[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model University {
@@ -41,25 +41,25 @@ model University {
 }
 
 model Place {
-  id          Int      @id @default(autoincrement())
-  name        String
-  campus      Campus @relation(fields: [campusId], references: [id], onDelete: Cascade)
-  campusId    Int
-  image       Image[]
-  floor        Int?
-  description String?
-  acessibility Boolean
-  capacity     Int?
-  events     Event[]
-  open24h        Boolean
-  timestamp   DateTime
-  building    String?
-  category    Category[]
-  position    Position[]
-  equipment   String
-  responsible Responsible[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  campus        Campus @relation(fields: [campusId], references: [id], onDelete: Cascade)
+  campusId      Int
+  image         Image[]
+  floor         Int?
+  description   String?
+  acessibility  Boolean
+  capacity      Int?
+  events        Event[]
+  open24h       Boolean
+  timestamp     DateTime
+  building      String?
+  category      Category[]
+  position      Position[]
+  equipment     String
+  responsible   Responsible[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Image {
@@ -86,7 +86,7 @@ model Category {
   name        String
   description String?
   place       Place @relation(fields: [placeId], references: [id])
-  placeId      Int
+  placeId     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -96,8 +96,8 @@ model Event {
   name        String
   description String?
   date        DateTime?
-  place        Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
-  placeId      Int
+  place       Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId     Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
